@@ -2,19 +2,37 @@
 #include "ui_diaryall.h"
 #include"uploadDiary.h"
 #include"diaryDetail.h"
+#include"mine.h"
 
 diaryAll::diaryAll(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::diaryAll)
 {
     ui->setupUi(this);
+    ui->allPushButton->setStyleSheet(seletcedStyleSheet);
+    ui->popularityPushButton->setStyleSheet(initialStyleSheet);
+    ui->browsePushButton->setStyleSheet(initialStyleSheet);
+    ui->refreshPushButton->setStyleSheet(initialStyleSheet);
     getAllDiary();
+    diaryInfoListShow = diaryInfoList;
     showDiaryAll();
     layout = new QVBoxLayout(this);
     createDiaryEntries();
-    setLayout(layout);
+    // setLayout(layout);
+    setLayout(mainLayout);
     setWindowTitle("日志浏览器");
-    layout->setContentsMargins(20, 80, 20, 0);
+    mainLayout->setContentsMargins(20, 80, 20, 0);
+    // layout->setContentsMargins(20, 80, 20, 0);
+    connect(ui->searchLineEdit, &QLineEdit::textChanged, this, &diaryAll::onSearchTextChanged);
+    QSpacerItem* verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    mainLayout->addItem(verticalSpacer);
+    QHBoxLayout* buttonLayout = new QHBoxLayout;
+    // 将 navigatorPushButton 添加到主布局中，放在 QSpacerItem 之后
+    buttonLayout->addWidget(ui->navigatorButton);
+    buttonLayout->addWidget(ui->recommendButton);
+    buttonLayout->addWidget(ui->diaryButton);
+    buttonLayout->addWidget(ui->mineButton);
+    mainLayout->addLayout(buttonLayout);
 }
 
 QVector<diaryInfo> diaryAll::getAllDiary() {
@@ -40,12 +58,14 @@ QVector<diaryInfo> diaryAll::getAllDiary() {
 }
 
 int diaryAll::showDiaryAll(){
-    diaryInfoListShow = diaryInfoList;
+    std::sort(diaryInfoListShow.begin(), diaryInfoListShow.end(), [](const diaryInfo &a, const diaryInfo &b) {
+        return a.diaryId > b.diaryId;
+    });
     return diaryInfoListShow.size();
 }
 
 int diaryAll::showPopularityDiaryAll(){
-    diaryInfoListShow = diaryInfoList;
+
     int n = diaryInfoListShow.size();
     int sortRange = std::min(10, n); // 确保排序范围不超过数组大小
 
@@ -60,7 +80,7 @@ int diaryAll::showPopularityDiaryAll(){
     return diaryInfoListShow.size();
 }
 int diaryAll::showBrowseDiaryAll(){
-    diaryInfoListShow = diaryInfoList;
+
     int n = diaryInfoListShow.size();
     int sortRange = std::min(10, n); // 确保排序范围不超过数组大小
 
@@ -78,27 +98,41 @@ int diaryAll::showBrowseDiaryAll(){
 void diaryAll::createDiaryEntries() {
     for (const diaryInfo &log : diaryInfoListShow) {
         QLabel *titleLabel = new QLabel(log.title, this);
-        QLabel *contentLabel = new QLabel(log.content.left(50) + "...", this);
+        QLabel *contentLabel = new QLabel(log.content.left(20) + "...", this);
+        QLabel *timeLabel = new QLabel("日记时间:"+log.time.toString("yyyy年M月d日HH:mm"), this); // 使用toString方法将QDateTime转换为指定格式的字符串
+        QLabel *pointLabel = new QLabel("评分:"+QString::number(log.point ,'f', 2), this); // 使用QString::number方法将int类型转换为QString
+        QLabel *browseLabel = new QLabel("浏览量:"+QString::number(log.browse), this);
+        QLabel *destinationLabel = new QLabel(log.destination, this);
         QPushButton *button = new QPushButton("查看详情", this);
         button->setProperty("diaryId", log.diaryId); // 设置按钮的自定义属性，用于标识对应的日志ID
         button->setProperty("userId", log.userId); // 设置按钮的自定义属性，用于标识对应的作者ID
 
-        layout->addWidget(titleLabel);
-
-        layout->addWidget(contentLabel);
-        layout->addWidget(button);
-        horizontalLayout = new QHBoxLayout;
+        QHBoxLayout *headLayout = new QHBoxLayout;
+        headLayout->addWidget(titleLabel);
+        headLayout->addWidget(pointLabel);
+        headLayout->addWidget(browseLabel);
+        QHBoxLayout *midLayout = new QHBoxLayout;
+        midLayout->addWidget(destinationLabel);
+        QSpacerItem *spacer = new QSpacerItem(35, 20, QSizePolicy::Expanding, QSizePolicy::Minimum); // 添加一个弹性空间
+        midLayout->addItem(spacer);
+        midLayout->addWidget(timeLabel);
+        // layout->addWidget(contentLabel);
+        // layout->addWidget(button);
+        QHBoxLayout *horizontalLayout = new QHBoxLayout;
         horizontalLayout->addWidget(contentLabel);
         // 创建一个弹性空间，将按钮推到最右侧
-        QSpacerItem *spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-        horizontalLayout->addItem(spacer);
+        QSpacerItem *spacer1 = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout->addItem(spacer1);
 
         // 设置按钮的固定大小
         button->setFixedSize(100, 30); // 例如宽度100，高度30
         horizontalLayout->addWidget(button);
 
         // 将水平布局添加到主垂直布局中
+        layout->addLayout(headLayout);
+        layout->addLayout(midLayout);
         layout->addLayout(horizontalLayout);
+
         // 创建分隔线
         QFrame *line = new QFrame(this);
         line->setFrameShape(QFrame::HLine);
@@ -108,22 +142,35 @@ void diaryAll::createDiaryEntries() {
 
         // 设置线的宽度为布局宽度的80%
         QHBoxLayout *lineLayout = new QHBoxLayout;
-        // QSpacerItem *leftSpacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-        // QSpacerItem *rightSpacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-        // lineLayout->addItem(leftSpacer);
         lineLayout->addWidget(line);
-        // lineLayout->addItem(rightSpacer);
 
         // 添加线的布局到主布局
         layout->addLayout(lineLayout);
 
         titleLabels.append(titleLabel);
         contentLabels.append(contentLabel);
+        timeLabels.append(timeLabel);
+        pointLabels.append(pointLabel);
+        browseLabels.append(browseLabel);
+        destinationLabels.append(destinationLabel);
         buttons.append(button);
         lines.append(line);
 
         connect(button, &QPushButton::clicked, this, &diaryAll::showDiaryDetail);
+
     }
+    // 创建一个临时小部件，用来管理布局
+    QWidget *containerWidget = new QWidget;
+    containerWidget->setLayout(layout);
+
+    // 创建QScrollArea并设置它的内容为containerWidget
+    QScrollArea *scrollArea = new QScrollArea;
+    scrollArea->setWidget(containerWidget);
+    scrollArea->setWidgetResizable(true);
+
+    // 设置主布局
+    mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(scrollArea);
 }
 void diaryAll::updateAllDiaryEntries() {
     int n = qMin(diaryInfoListShow.size(), titleLabels.size()); // 获取原始布局和数据列表中较小的长度
@@ -132,34 +179,52 @@ void diaryAll::updateAllDiaryEntries() {
         QLabel *titleLabel = titleLabels[i];
         QLabel *contentLabel = contentLabels[i];
         QPushButton *button = buttons[i];
+        QLabel* timeLabel = timeLabels[i];
+        QLabel* pointLabel = pointLabels[i];
+        QLabel* destinationLabel = destinationLabels[i];
+        QLabel* browseLabel = browseLabels[i];
         QFrame *line = lines[i];
 
         const diaryInfo &log = diaryInfoListShow[i]; // 获取当前日志信息
 
         // 更新titleLabel、contentLabel和button的属性
         titleLabel->setText(log.title);
-        contentLabel->setText(log.content.left(50) + "...");
+        contentLabel->setText(log.content.left(20) + "...");
         button->setProperty("diaryId", log.diaryId);
         button->setProperty("userId", log.userId);
-
+        timeLabel->setText("日记时间:"+diaryInfoListShow[i].time.toString("yyyy年M月d日HH:mm"));
+        pointLabel->setText("评分:"+QString::number(diaryInfoListShow[i].point, 'f', 2));
+        destinationLabel->setText(diaryInfoListShow[i].destination);
+        browseLabel->setText("浏览量:"+QString::number(diaryInfoListShow[i].browse));
         // 显示控件
         titleLabel->setVisible(true);
         contentLabel->setVisible(true);
+        timeLabel->setVisible(true);
+        pointLabel->setVisible(true);
+        destinationLabel->setVisible(true);
+        browseLabel->setVisible(true);
+
         button->setVisible(true);
         line->setVisible(true); // 显示分隔线
-        button->setVisible(true);
-        line->setVisible(true); // 隐藏分隔线
     }
 
     // 隐藏多余的控件
-    for (int i = n; i < titleLabels.size(); ++i) {
+    for (int i = n; i < qMax(diaryInfoListShow.size(), diaryInfoList.size()); ++i) {
         QLabel *titleLabel = titleLabels[i];
         QLabel *contentLabel = contentLabels[i];
         QPushButton *button = buttons[i];
+        QLabel* timeLabel = timeLabels[i];
+        QLabel* pointLabel = pointLabels[i];
+        QLabel* destinationLabel = destinationLabels[i];
+        QLabel* browseLabel = browseLabels[i];
         QFrame *line = lines[i];
 
         titleLabel->setText("");
         contentLabel->setText("");
+        timeLabel->setText("");
+        pointLabel->setText("");
+        destinationLabel->setText("");
+        browseLabel->setText("");
         button->setVisible(false);
         line->setVisible(false); // 隐藏分隔线
     }
@@ -167,26 +232,44 @@ void diaryAll::updateAllDiaryEntries() {
 void diaryAll::updateDiaryEntries(){
     int i=0;
     int n=diaryInfoListShow.size();
-    int sortRange = std::min(10, n); // 确保排序范围不超过数组大小
+    int sortRange = qMin(10, n); // 确保排序范围不超过数组大小
     for (i = 0; i < sortRange; ++i) {
         QLabel* titleLabel = titleLabels[i];
         QLabel* contentLabel = contentLabels[i];
         QPushButton* button = buttons[i];
-
+        QLabel* timeLabel = timeLabels[i];
+        QLabel* pointLabel = pointLabels[i];
+        QLabel* destinationLabel = destinationLabels[i];
+        QLabel* browseLabel = browseLabels[i];
+        QFrame* line=lines[i];
         // 更新 titleLabel、contentLabel 和 button 的属性
         titleLabel->setText(diaryInfoListShow[i].title);
-        contentLabel->setText(diaryInfoListShow[i].content);
+        contentLabel->setText(diaryInfoListShow[i].content.left(20) + "...");
+        timeLabel->setText("日记时间:"+diaryInfoListShow[i].time.toString("yyyy年M月d日HH:mm"));
+        pointLabel->setText("评分:"+QString::number(diaryInfoListShow[i].point, 'f', 2));
+        destinationLabel->setText(diaryInfoListShow[i].destination);
+        browseLabel->setText("浏览量:"+QString::number(diaryInfoListShow[i].browse));
         button->setProperty("diaryId", diaryInfoListShow[i].diaryId);
         button->setProperty("userId", diaryInfoListShow[i].userId);
+        button->setVisible(true);
+        line->setVisible(true); // 显示分隔线
     }
-    for(i;i<diaryInfoListShow.size();i++){
+    for(i;i<qMax(diaryInfoList.size(), n);++i){
         QLabel* titleLabel = titleLabels[i];
         QLabel* contentLabel = contentLabels[i];
         QPushButton* button = buttons[i];
+        QLabel* timeLabel = timeLabels[i];
+        QLabel* pointLabel = pointLabels[i];
+        QLabel* destinationLabel = destinationLabels[i];
+        QLabel* browseLabel = browseLabels[i];
         QFrame* line=lines[i];
         // 更新 titleLabel、contentLabel 和 button 的属性
         titleLabel->setText("");
         contentLabel->setText("");
+        timeLabel->setText("");
+        pointLabel->setText("");
+        destinationLabel->setText("");
+        browseLabel->setText("");
         button->hide();
         line->setVisible(false); // 显示分隔线
     }
@@ -234,7 +317,7 @@ int diaryAll::searchDiary(const QString &searchInput) {
 
     for (const auto &diary : diaryInfoList) {
         if (customContains(diary.title, searchInput) ||
-            customContains(diary.content, searchInput)) {
+            customContains(diary.content, searchInput)|| customContains(diary.destination, searchInput)) {
             tempDiaryInfoList.append(diary);
         }
     }
@@ -247,7 +330,42 @@ int diaryAll::searchDiary(const QString &searchInput) {
         return 1;
     }
 }
-
+void diaryAll::onSearchTextChanged(const QString &text) {
+    searchInput = text;
+    qDebug()<<searchInput;
+    if(searchInput==""){
+        isSearch=0;
+    }
+    else{
+        isSearch=1;
+    }
+}
+void diaryAll::refresh(){
+    // isSearch=0;
+    // searchInput="";
+    // ui->searchLineEdit->setText("");
+    // getAllDiary();
+    // diaryInfoListShow = diaryInfoList;
+    // switch(page){
+    // case 0:
+    //     showDiaryAll();
+    //     updateAllDiaryEntries();
+    //     setLayout(layout);
+    //     break;
+    // case 1:
+    //     showPopularityDiaryAll();
+    //     updateDiaryEntries();
+    //     setLayout(layout);
+    //     break;
+    // case 2:
+    //     showBrowseDiaryAll();
+    //     updateDiaryEntries();
+    //     setLayout(layout);
+    //     break;
+    // default:break;
+    // }
+    QMessageBox::information(this, "refresh", "刷新成功!");
+}
 diaryAll::~diaryAll()
 {
     delete ui;
@@ -261,11 +379,17 @@ void diaryAll::on_allPushButton_clicked()
 {
     if(page!=0){
         page=0;
+        ui->allPushButton->setStyleSheet(seletcedStyleSheet);
+        ui->popularityPushButton->setStyleSheet(initialStyleSheet);
+        ui->browsePushButton->setStyleSheet(initialStyleSheet);
+        ui->refreshPushButton->setStyleSheet(initialStyleSheet);
+        if(isSearch==0){
+            diaryInfoListShow = diaryInfoList;
+        }
         showDiaryAll();
         updateAllDiaryEntries();
         setLayout(layout);
     }
-
 }
 
 
@@ -280,6 +404,13 @@ void diaryAll::on_popularityPushButton_clicked()
 {
     if(page!=1){
         page=1;
+        ui->allPushButton->setStyleSheet(initialStyleSheet);
+        ui->popularityPushButton->setStyleSheet(seletcedStyleSheet);
+        ui->browsePushButton->setStyleSheet(initialStyleSheet);
+        ui->refreshPushButton->setStyleSheet(initialStyleSheet);
+        if(isSearch==0){
+            diaryInfoListShow = diaryInfoList;
+        }
         showPopularityDiaryAll();
         updateDiaryEntries();
         setLayout(layout);
@@ -291,7 +422,17 @@ void diaryAll::on_browsePushButton_clicked()
 {
     if(page!=2){
         page=2;
-        showBrowseDiaryAll();
+        ui->allPushButton->setStyleSheet(initialStyleSheet);
+        ui->popularityPushButton->setStyleSheet(initialStyleSheet);
+        ui->browsePushButton->setStyleSheet(seletcedStyleSheet);
+        ui->refreshPushButton->setStyleSheet(initialStyleSheet);
+        if(isSearch==0){
+            diaryInfoListShow = diaryInfoList;
+            showBrowseDiaryAll();
+        }
+        else{
+            showBrowseDiaryAll();
+        }
         updateDiaryEntries();
         setLayout(layout);
     }
@@ -300,19 +441,40 @@ void diaryAll::on_browsePushButton_clicked()
 
 void diaryAll::on_searchPushButton_clicked()
 {
-    page=4;
-    QString searchInput=ui->searchLineEdit->text();
+
     if(searchInput==""){
         QMessageBox::information(this, "search", "搜索内容不可为空");
     }
     else{
+        isSearch=1;
         int searchReturn=searchDiary(searchInput);
         for(int i=0;i<diaryInfoListShow.length();i++){
             qDebug()<<diaryInfoListShow[i].diaryId;
         }
         if(searchReturn==1){
-            updateAllDiaryEntries();
-            setLayout(layout);
+            switch(page){
+            case 0:
+                showDiaryAll();
+                updateAllDiaryEntries();
+                setLayout(layout);
+                break;
+            case 1:
+                showPopularityDiaryAll();
+                updateDiaryEntries();
+                setLayout(layout);
+                break;
+            case 2:
+                showBrowseDiaryAll();
+                updateDiaryEntries();
+                setLayout(layout);
+                break;
+            default:
+                updateDiaryEntries();
+                setLayout(layout);
+                break;
+            }
+
+
         }
         else{
             QMessageBox::information(this, "search", "无此日记");
@@ -322,5 +484,20 @@ void diaryAll::on_searchPushButton_clicked()
         }
     }
 
+}
+
+
+
+void diaryAll::on_refreshPushButton_clicked()
+{
+    refresh();
+}
+
+
+void diaryAll::on_mineButton_clicked()
+{
+    mine *user = new mine;
+    user->show();
+    QTimer::singleShot(2, this, &QWidget::close); // 延迟关闭当前窗口
 }
 

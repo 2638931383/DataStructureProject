@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MapANDOptions M;
 
-     M.show();
+    diaryAll D;
+    D.show();
+     // M.show();
     return a.exec();
 }
