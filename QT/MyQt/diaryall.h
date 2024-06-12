@@ -1,40 +1,12 @@
 #ifndef DIARYALL_H
 #define DIARYALL_H
-#include <QWidget>
-#include <QtSql>
-#include <QDateTime>
-#include <QMessageBox>//消息盒子
-#include <QByteArray>
-#include <QDebug>
-#include <QtGlobal> // 包含 qint64 类型
-#include <QString>
-#include <QVector>
-#include <QStringListModel>
-#include <QStyledItemDelegate>
-#include <QPainter>
-#include <QListView>
-#include <QMainWindow>
-#include<QListWidget>
-#include <QLabel>
-#include<QVBoxLayout>
-#include<QHBoxLayout>
-#include <algorithm>
+
+#include"allClass.h"
 namespace Ui {
 class diaryAll;
 }
 
-class diaryInfo{
-public:
-    int diaryId;
-    int userId;
-    QString title;
-    QString destination;
-    QString  content;
-    QString exchangeCode;
-    float point;
-    int browse;
-    QDateTime time;
-};
+
 
 class diaryAll : public QWidget
 {
@@ -52,8 +24,16 @@ public:
 
     void showDiaryDetail();
 
+    int showPopularityDiaryAll();
+
+    void updateDiaryEntries();
+
 private slots:
     void on_allPushButton_clicked();
+
+    void on_uploadPushButton_clicked();
+
+    void on_popularityPushButton_clicked();
 
 private:
     Ui::diaryAll *ui;
@@ -63,6 +43,9 @@ private:
     QVector<diaryInfo> diaryInfoListShow;
     QVBoxLayout *layout;
     QHBoxLayout *horizontalLayout;
+    QLabel *titleLabel;
+    QLabel *contentLabel;
+    QPushButton *button;
 };
 
 

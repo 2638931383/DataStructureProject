@@ -14,9 +14,11 @@ SOURCES += \
     MapANDOptions.cpp \
     MySQL_Operate.cpp \
     Register.cpp \
+    allclass.cpp \
     diaryall.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    uploaddiary.cpp
 
 HEADERS += \
     GetPoints.h \
@@ -24,15 +26,18 @@ HEADERS += \
     MapANDOptions.h \
     MySQL_Operate.h \
     Register.h \
+    allclass.h \
     diaryall.h \
-    mainwindow.h
+    mainwindow.h \
+    uploaddiary.h
 
 FORMS += \
     Login.ui \
     MapANDOptions.ui \
     Register.ui \
     diaryall.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    uploaddiary.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

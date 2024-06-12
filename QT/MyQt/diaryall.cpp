@@ -1,7 +1,6 @@
 #include "diaryall.h"
 #include "ui_diaryall.h"
-#include "MySQL_Operate.h"
-#include"qlineedit.h"
+#include"uploadDiary.h"
 
 diaryAll::diaryAll(QWidget *parent)
     : QWidget(parent)
@@ -41,14 +40,28 @@ QVector<diaryInfo> diaryAll::getAllDiary() {
 
 int diaryAll::showDiaryAll(){
     diaryInfoListShow = diaryInfoList;
-    return 1;
-
+    return diaryInfoListShow.size();
 }
+
+int diaryAll::showPopularityDiaryAll(){
+    diaryInfoListShow = diaryInfoList;
+    int n = diaryInfoListShow.size();
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = 0; j < n - i - 1; ++j) {
+            if (diaryInfoListShow[j].point < diaryInfoListShow[j + 1].point) {
+                // 交换两个元素的位置
+                std::swap(diaryInfoListShow[j], diaryInfoListShow[j + 1]);
+            }
+        }
+    }
+    return diaryInfoListShow.size();
+}
+
 void diaryAll::createDiaryEntries() {
     for (const diaryInfo &log : diaryInfoListShow) {
-        QLabel *titleLabel = new QLabel(log.title, this);
-        QLabel *contentLabel = new QLabel(log.content.left(50) + "...", this);
-        QPushButton *button = new QPushButton("查看详情", this);
+        titleLabel = new QLabel(log.title, this);
+        contentLabel = new QLabel(log.content.left(50) + "...", this);
+        button = new QPushButton("查看详情", this);
         button->setProperty("diaryId", log.diaryId); // 设置按钮的自定义属性，用于标识对应的日志ID
         button->setProperty("userId", log.userId); // 设置按钮的自定义属性，用于标识对应的作者ID
 
@@ -71,7 +84,15 @@ void diaryAll::createDiaryEntries() {
         connect(button, &QPushButton::clicked, this, &diaryAll::showDiaryAll);
     }
 }
-
+void diaryAll::updateDiaryEntries() {
+    for (const diaryInfo &log : diaryInfoListShow) {
+        button->setProperty("diaryId", log.diaryId); // 设置按钮的自定义属性，用于标识对应的日志ID
+        button->setProperty("userId", log.userId); // 设置按钮的自定义属性，用于标识对应的作者ID
+        titleLabel->setText(log.title);
+        // 修改 contentLabel 的文本
+        contentLabel->setText(log.content);
+    }
+}
 void diaryAll::showDiaryDetail() {
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     if (button) {
@@ -93,10 +114,27 @@ void diaryAll::on_allPushButton_clicked()
     if(page!=0){
         page=0;
         showDiaryAll();
-        createDiaryEntries();
+        updateDiaryEntries();
         setLayout(layout);
-        setWindowTitle("日志浏览器");
     }
 
+}
+
+
+void diaryAll::on_uploadPushButton_clicked()
+{
+    uploadDiary *upload = new uploadDiary;
+    upload->show();
+}
+
+
+void diaryAll::on_popularityPushButton_clicked()
+{
+    if(page!=1){
+        page=1;
+        showPopularityDiaryAll();
+        updateDiaryEntries();
+        setLayout(layout);
+    }
 }
 

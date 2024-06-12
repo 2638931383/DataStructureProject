@@ -18,7 +18,7 @@
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>321</width>
+     <width>291</width>
      <height>20</height>
     </rect>
    </property>
@@ -26,9 +26,9 @@
   <widget class="QPushButton" name="searchPushButton">
    <property name="geometry">
     <rect>
-     <x>350</x>
+     <x>320</x>
      <y>20</y>
-     <width>81</width>
+     <width>41</width>
      <height>21</height>
     </rect>
    </property>
@@ -86,6 +86,19 @@
    </property>
    <property name="text">
     <string>猜你喜欢</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="uploadPushButton">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>20</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>上传日记</string>
    </property>
   </widget>
  </widget>
