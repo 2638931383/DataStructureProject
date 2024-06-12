@@ -28,12 +28,12 @@ Map_::Map_(QWidget *parent)
         Botton[i] = new QPushButton();
         Botton[i]->setToolTip(point[i].Name);
         Botton[i]->setObjectName("place");
-        Botton[i]->setFixedSize(10,10);
+        Botton[i]->setFixedSize(3,3);
         Botton[i]->setStyleSheet("QPushButton {"
                                  "background-color: red;"    // Red background
                                  "border: none;"
                                  "color: white;"                 // White text
-                                 "border-radius: 5;"          // Rounded corners (circle)
+                                 "border-radius: 1.5;"          // Rounded corners (circle)
                                  "}"
                                  "QPushButton:hover {"
                                  "background-color: #45a049;"    // Darker green when hovered
@@ -45,6 +45,13 @@ Map_::Map_(QWidget *parent)
         proxy[i]->setPos(X,Y);
         Scene->addItem(proxy[i]);
     }
+    QPen outlinePen(Qt::white); // Outer white pen for outline
+    outlinePen.setWidth(2);
+    QPen innerPen(Qt::black); // Inner black pen for the line
+    innerPen.setWidth(1);
+    QLineF line(proxy[1]->pos() , proxy[2]->pos());
+    Scene->addLine(line,outlinePen);
+    Scene->addLine(line,innerPen);
     this->setDragMode(QGraphicsView::ScrollHandDrag);   // Enable drag mode
     this->setScene(Scene);
 }

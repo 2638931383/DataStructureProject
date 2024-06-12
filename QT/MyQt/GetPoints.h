@@ -34,6 +34,10 @@ void printDis();
 void readPoints(void);
 //------------------------------------
 
+enum Point_Type
+{
+    EDU , FOOD , landscape , hospital , traffic , other
+};
 
 class subPoint
 {
@@ -96,10 +100,10 @@ public:
     float Scores;
     subPoint subpoint[numOfPoints];
     int subPointsNum;
-
+    Point_Type Type_;
 public:
     Point();
-    Point(double , QString , QString , double , int , int);
+    Point(double , QString , QString , double , int , int , Point_Type);
     void printInfo();
 };
 
