@@ -12,7 +12,7 @@ bool book[numOfPoints];
 std::vector<int> MyEnd;
 int start;
 
-Point::Point(double longitude, QString type, QString name, double latitude, int num, int sub)
+Point::Point(double longitude, QString type, QString name, double latitude, int num, int sub,Point_Type type_)
 {
     Longitude = longitude;
     Name = name;
@@ -20,6 +20,7 @@ Point::Point(double longitude, QString type, QString name, double latitude, int 
     Latitude = latitude;
     pointsAdjNum = num;
     subPointsNum = sub;
+    Type_ = type_;
 }
 
 subPoint::subPoint(double longitude, QString name, double latitude, int num)
@@ -77,11 +78,36 @@ void readPoints()
 
         lo = row[1].toDouble();
         la = row[2].toDouble();
-        QString name = row[0].toUtf8();
-        QString type = row[3].toUtf8();
-        point[nPoints] = Point(lo, type, name, la , 0 , 0);
+        QString name = row[0].trimmed().toUtf8();  // 去除首尾空白字符
+        QString type = row[3].trimmed().toUtf8();  // 去除首尾空白字符
+        QString temp = type;
+        QStringList type_temp = temp.split(';' , Qt::SkipEmptyParts);
+        if (type_temp[0].compare(QString::fromLocal8Bit("科教文化服务")) == 0)
+        {
+            point[nPoints] = Point(lo, QString::fromLocal8Bit("学校"), name, la , 0 , 0 , EDU);
+        }
+        else if (type_temp[0].compare(QString::fromLocal8Bit("医疗保健服务")) == 0)
+        {
+            point[nPoints] = Point(lo, QString::fromLocal8Bit("医院"), name, la , 0 , 0 , hospital);
+        }
+        else if(type_temp[0].compare(QString::fromLocal8Bit("风景名胜")) == 0)
+        {
+            point[nPoints] = Point(lo, QString::fromLocal8Bit("风景名胜"), name, la , 0 , 0 , landscape);
+        }
+        else if(type_temp[0].compare(QString::fromLocal8Bit("交通设施服务")) == 0)
+        {
+            point[nPoints] = Point(lo, QString::fromLocal8Bit("交通设施服务"), name, la , 0 , 0 , traffic);
+        }
+        else if (type_temp[0].compare(QString::fromLocal8Bit("餐饮服务")) == 0)
+        {
+            point[nPoints] = Point(lo, QString::fromLocal8Bit("餐饮"), name, la , 0 , 0 , FOOD);
+        }
+        else
+        {
+            point[nPoints] = Point(lo, "nothing important", name, la , 0 , 0 , other);
+        }
         nameToInedx_Mot.insert(name, nPoints);
-        //qDebug() << name << la << nPoints;
+        //qDebug() << name << point[nPoints].Type << nPoints << point[nPoints].Type_;
         nPoints++;
     }
 

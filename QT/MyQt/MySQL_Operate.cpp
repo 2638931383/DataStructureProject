@@ -18,3 +18,14 @@ void Init_Database(void)
     }
 
 }
+
+
+bool toMySQL(QString my)
+{
+    QSqlQuery query;
+    if (query.exec(my))
+    {
+        return true;
+    }
+    return false;
+}
