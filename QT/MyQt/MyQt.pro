@@ -14,6 +14,7 @@ SOURCES += \
     MapANDOptions.cpp \
     MySQL_Operate.cpp \
     Register.cpp \
+    diaryall.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -23,12 +24,14 @@ HEADERS += \
     MapANDOptions.h \
     MySQL_Operate.h \
     Register.h \
+    diaryall.h \
     mainwindow.h
 
 FORMS += \
     Login.ui \
     MapANDOptions.ui \
     Register.ui \
+    diaryall.ui \
     mainwindow.ui
 
 # Default rules for deployment.

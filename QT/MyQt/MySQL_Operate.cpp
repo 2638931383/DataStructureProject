@@ -1,13 +1,15 @@
 #include "MySQL_Operate.h"
 
+QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+
 void Init_Database(void)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+
 
     db.setHostName("127.0.0.1");
     db.setUserName("root");
-    db.setPassword("252211034");
-    db.setDatabaseName("DTS");
+    db.setPassword("root");
+    db.setDatabaseName("database1");
     if(!db.open()){
         qDebug() << "未成功链接到数据库";
     }

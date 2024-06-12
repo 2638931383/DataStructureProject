@@ -5,11 +5,14 @@
 #include "MySQL_Operate.h"
 #include "Register.h"
 #include "MapANDOptions.h"
+#include"diaryall.h"
 int main(int argc, char *argv[])
 {
     Init_Database();
     QApplication a(argc, argv);
     MapANDOptions M;
-    M.show();
+    diaryAll A;
+    A.show();
+    // M.show();
     return a.exec();
 }
