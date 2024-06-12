@@ -1,6 +1,6 @@
 #include "GetPoints.h"
 #include <random>
-
+#include <QDir>
 QMap<QString, int> nameToInedx_Mot;
 Point point[numOfPoints];
 bool visited[numOfPoints];
@@ -57,7 +57,7 @@ void readPoints()
 {
     nPoints = 0;
     double lo, la;
-    QFile file("D:\\MyCode\\DataStructure Project\\university.csv");
+    QFile file("./point/Point.CSV");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug() << "ERROR!";
@@ -81,7 +81,7 @@ void readPoints()
         QString type = row[3].toUtf8();
         point[nPoints] = Point(lo, type, name, la , 0 , 0);
         nameToInedx_Mot.insert(name, nPoints);
-        qDebug() << name << la << nPoints;
+        //qDebug() << name << la << nPoints;
         nPoints++;
     }
 

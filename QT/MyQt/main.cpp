@@ -11,8 +11,7 @@ int main(int argc, char *argv[])
     Init_Database();
     QApplication a(argc, argv);
     MapANDOptions M;
-    diaryAll A;
-    A.show();
-    // M.show();
+
+     M.show();
     return a.exec();
 }
