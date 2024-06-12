@@ -26,6 +26,8 @@ public:
 
     int showPopularityDiaryAll();
 
+    void updateAllDiaryEntries();
+
     void updateDiaryEntries();
 
 private slots:
@@ -43,9 +45,9 @@ private:
     QVector<diaryInfo> diaryInfoListShow;
     QVBoxLayout *layout;
     QHBoxLayout *horizontalLayout;
-    QLabel *titleLabel;
-    QLabel *contentLabel;
-    QPushButton *button;
+    QVector<QLabel*> titleLabels;
+    QVector<QLabel*> contentLabels;
+    QVector<QPushButton*> buttons;
 };
 
 

@@ -59,7 +59,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>热度</string>
+    <string>评分</string>
    </property>
   </widget>
   <widget class="QPushButton" name="browsePushButton">
@@ -72,7 +72,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>浏览</string>
+    <string>热度</string>
    </property>
   </widget>
   <widget class="QPushButton" name="interesPushButton">

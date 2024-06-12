@@ -43,4 +43,5 @@ public:
     int browse;
     QDateTime time;
 };
+
 #endif // ALLCLASS_H

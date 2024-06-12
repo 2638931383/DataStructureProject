@@ -46,8 +46,10 @@ int diaryAll::showDiaryAll(){
 int diaryAll::showPopularityDiaryAll(){
     diaryInfoListShow = diaryInfoList;
     int n = diaryInfoListShow.size();
-    for (int i = 0; i < n - 1; ++i) {
-        for (int j = 0; j < n - i - 1; ++j) {
+    int sortRange = std::min(10, n); // 确保排序范围不超过数组大小
+
+    for (int i = 0; i < sortRange - 1; ++i) {
+        for (int j = 0; j < sortRange - i - 1; ++j) {
             if (diaryInfoListShow[j].point < diaryInfoListShow[j + 1].point) {
                 // 交换两个元素的位置
                 std::swap(diaryInfoListShow[j], diaryInfoListShow[j + 1]);
@@ -59,9 +61,9 @@ int diaryAll::showPopularityDiaryAll(){
 
 void diaryAll::createDiaryEntries() {
     for (const diaryInfo &log : diaryInfoListShow) {
-        titleLabel = new QLabel(log.title, this);
-        contentLabel = new QLabel(log.content.left(50) + "...", this);
-        button = new QPushButton("查看详情", this);
+        QLabel *titleLabel = new QLabel(log.title, this);
+        QLabel *contentLabel = new QLabel(log.content.left(50) + "...", this);
+        QPushButton *button = new QPushButton("查看详情", this);
         button->setProperty("diaryId", log.diaryId); // 设置按钮的自定义属性，用于标识对应的日志ID
         button->setProperty("userId", log.userId); // 设置按钮的自定义属性，用于标识对应的作者ID
 
@@ -82,15 +84,52 @@ void diaryAll::createDiaryEntries() {
         // 将水平布局添加到主垂直布局中
         layout->addLayout(horizontalLayout);
         connect(button, &QPushButton::clicked, this, &diaryAll::showDiaryAll);
+
+        titleLabels.append(titleLabel);
+        contentLabels.append(contentLabel);
+        buttons.append(button);
+
+        connect(button, &QPushButton::clicked, this, &diaryAll::showDiaryAll);
     }
 }
-void diaryAll::updateDiaryEntries() {
-    for (const diaryInfo &log : diaryInfoListShow) {
-        button->setProperty("diaryId", log.diaryId); // 设置按钮的自定义属性，用于标识对应的日志ID
-        button->setProperty("userId", log.userId); // 设置按钮的自定义属性，用于标识对应的作者ID
-        titleLabel->setText(log.title);
-        // 修改 contentLabel 的文本
-        contentLabel->setText(log.content);
+void diaryAll::updateAllDiaryEntries() {
+    for (int i = 0; i < titleLabels.size(); ++i) {
+        QLabel* titleLabel = titleLabels[i];
+        QLabel* contentLabel = contentLabels[i];
+        QPushButton* button = buttons[i];
+
+        // 更新 titleLabel、contentLabel 和 button 的属性
+        titleLabel->setText(diaryInfoListShow[i].title);
+        contentLabel->setText(diaryInfoListShow[i].content);
+        button->setProperty("diaryId", diaryInfoListShow[i].diaryId);
+        button->setProperty("userId", diaryInfoListShow[i].userId);
+        button->show();
+    }
+}
+void diaryAll::updateDiaryEntries(){
+    int i=0;
+    int n=titleLabels.size();
+    int sortRange = std::min(10, n); // 确保排序范围不超过数组大小
+    for (i = 0; i < sortRange; ++i) {
+        QLabel* titleLabel = titleLabels[i];
+        QLabel* contentLabel = contentLabels[i];
+        QPushButton* button = buttons[i];
+
+        // 更新 titleLabel、contentLabel 和 button 的属性
+        titleLabel->setText(diaryInfoListShow[i].title);
+        contentLabel->setText(diaryInfoListShow[i].content);
+        button->setProperty("diaryId", diaryInfoListShow[i].diaryId);
+        button->setProperty("userId", diaryInfoListShow[i].userId);
+    }
+    for(i;i<titleLabels.size();i++){
+        QLabel* titleLabel = titleLabels[i];
+        QLabel* contentLabel = contentLabels[i];
+        QPushButton* button = buttons[i];
+
+        // 更新 titleLabel、contentLabel 和 button 的属性
+        titleLabel->setText("");
+        contentLabel->setText("");
+        button->hide();
     }
 }
 void diaryAll::showDiaryDetail() {
@@ -114,7 +153,7 @@ void diaryAll::on_allPushButton_clicked()
     if(page!=0){
         page=0;
         showDiaryAll();
-        updateDiaryEntries();
+        updateAllDiaryEntries();
         setLayout(layout);
     }
 
