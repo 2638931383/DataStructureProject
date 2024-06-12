@@ -26,16 +26,25 @@ public:
 
     int showPopularityDiaryAll();
 
+    int showBrowseDiaryAll();
+
     void updateAllDiaryEntries();
 
     void updateDiaryEntries();
 
+    bool customContains(const QString &str, const QString &subStr);
+
+    int searchDiary(const QString &searchInput);
 private slots:
     void on_allPushButton_clicked();
 
     void on_uploadPushButton_clicked();
 
     void on_popularityPushButton_clicked();
+
+    void on_browsePushButton_clicked();
+
+    void on_searchPushButton_clicked();
 
 private:
     Ui::diaryAll *ui;
@@ -48,6 +57,7 @@ private:
     QVector<QLabel*> titleLabels;
     QVector<QLabel*> contentLabels;
     QVector<QPushButton*> buttons;
+    QVector<QFrame*> lines;
 };
 
 

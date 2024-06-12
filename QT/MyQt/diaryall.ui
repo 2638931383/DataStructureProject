@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLineEdit" name="searchLineEdi">
+  <widget class="QLineEdit" name="searchLineEdit">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -21,6 +21,9 @@
      <width>291</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="placeholderText">
+    <string>请输入您想搜索的标题或内容</string>
    </property>
   </widget>
   <widget class="QPushButton" name="searchPushButton">

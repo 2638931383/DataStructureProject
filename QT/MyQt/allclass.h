@@ -21,6 +21,7 @@
 #include<QVBoxLayout>
 #include<QHBoxLayout>
 #include <algorithm>
+#include <QDialog>
 #include "MySQL_Operate.h"
 
 class allClass : public QWidget

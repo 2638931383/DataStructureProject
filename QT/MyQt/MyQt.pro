@@ -16,6 +16,7 @@ SOURCES += \
     Register.cpp \
     allclass.cpp \
     diaryall.cpp \
+    diarydetail.cpp \
     main.cpp \
     mainwindow.cpp \
     uploaddiary.cpp
@@ -28,6 +29,7 @@ HEADERS += \
     Register.h \
     allclass.h \
     diaryall.h \
+    diarydetail.h \
     mainwindow.h \
     uploaddiary.h
 
@@ -36,6 +38,7 @@ FORMS += \
     MapANDOptions.ui \
     Register.ui \
     diaryall.ui \
+    diarydetail.ui \
     mainwindow.ui \
     uploaddiary.ui
 
