@@ -15,6 +15,7 @@ SOURCES += \
     MySQL_Operate.cpp \
     Register.cpp \
     allclass.cpp \
+    bupt.cpp \
     diaryall.cpp \
     diarydetail.cpp \
     main.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     MySQL_Operate.h \
     Register.h \
     allclass.h \
+    bupt.h \
     diaryall.h \
     diarydetail.h \
     mainwindow.h \
@@ -39,6 +41,7 @@ FORMS += \
     Login.ui \
     MapANDOptions.ui \
     Register.ui \
+    bupt.ui \
     diaryall.ui \
     diarydetail.ui \
     mainwindow.ui \

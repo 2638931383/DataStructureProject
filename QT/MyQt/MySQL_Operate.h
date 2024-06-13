@@ -8,5 +8,4 @@
 extern QSqlDatabase db;
 
 void Init_Database(void);
-bool toMySQL(QString my);
 #endif // MYSQL_OPERATE_H

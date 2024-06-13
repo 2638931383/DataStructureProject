@@ -1,6 +1,7 @@
 #include "GetPoints.h"
 #include <random>
 #include <QDir>
+#include "MySQL_Operate.h"
 QMap<QString, int> nameToInedx_Mot;
 Point point[numOfPoints];
 bool visited[numOfPoints];
@@ -12,7 +13,7 @@ bool book[numOfPoints];
 std::vector<int> MyEnd;
 int start;
 
-Point::Point(double longitude, QString type, QString name, double latitude, int num, int sub,Point_Type type_)
+Point::Point(double longitude, QString type, QString name, double latitude, int num, int sub ,double m,double v)
 {
     Longitude = longitude;
     Name = name;
@@ -20,15 +21,19 @@ Point::Point(double longitude, QString type, QString name, double latitude, int 
     Latitude = latitude;
     pointsAdjNum = num;
     subPointsNum = sub;
-    Type_ = type_;
+    //Type_ = type_;
+    marks = m;
+    views = v;
 }
 
-subPoint::subPoint(double longitude, QString name, double latitude, int num)
+subPoint::subPoint(double longitude, QString name, double latitude, int num,std::set<int> adj,QString t)
 {
 	Longitude = longitude;
 	Name = name;
 	Latitude = latitude;
 	pointsAdjNum = num;
+    pointsAdj = adj;
+    type = t;
 }
 
 subPoint::subPoint()
@@ -56,98 +61,182 @@ void Point::printInfo()
 
 void readPoints()
 {
-    nPoints = 0;
-    double lo, la;
-    QFile file("./point/Point.CSV");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        qDebug() << "ERROR!";
-        return;
-    }
-    QTextStream stream(&file);
-    stream.setEncoding (QStringConverter::System); //------------------------
-    while (!stream.atEnd())
-    {
-        QString line = stream.readLine();
-        if (nPoints == 0)
-        {
-            nPoints++;
-            continue;
-        }
-        QStringList row = line.split(',', Qt::SkipEmptyParts);
+    nPoints = 1;
+    // QFile file("./point/Point.CSV");
+    // if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    // {
+    //     qDebug() << "ERROR!";
+    //     return;
+    // }
+    // QTextStream stream(&file);
+    // stream.setEncoding (QStringConverter::System); //------------------------
+    // while (!stream.atEnd())
+    // {
+    //     QString line = stream.readLine();
+    //     if (nPoints == 0)
+    //     {
+    //         nPoints++;
+    //         continue;
+    //     }
+    //     QStringList row = line.split(',', Qt::SkipEmptyParts);
 
-        lo = row[1].toDouble();
-        la = row[2].toDouble();
-        QString name = row[0].trimmed().toUtf8();  // 去除首尾空白字符
-        QString type = row[3].trimmed().toUtf8();  // 去除首尾空白字符
-        QString temp = type;
-        QStringList type_temp = temp.split(';' , Qt::SkipEmptyParts);
-        if (type_temp[0].compare(QString::fromLocal8Bit("科教文化服务")) == 0)
-        {
-            point[nPoints] = Point(lo, QString::fromLocal8Bit("学校"), name, la , 0 , 0 , EDU);
-        }
-        else if (type_temp[0].compare(QString::fromLocal8Bit("医疗保健服务")) == 0)
-        {
-            point[nPoints] = Point(lo, QString::fromLocal8Bit("医院"), name, la , 0 , 0 , hospital);
-        }
-        else if(type_temp[0].compare(QString::fromLocal8Bit("风景名胜")) == 0)
-        {
-            point[nPoints] = Point(lo, QString::fromLocal8Bit("风景名胜"), name, la , 0 , 0 , landscape);
-        }
-        else if(type_temp[0].compare(QString::fromLocal8Bit("交通设施服务")) == 0)
-        {
-            point[nPoints] = Point(lo, QString::fromLocal8Bit("交通设施服务"), name, la , 0 , 0 , traffic);
-        }
-        else if (type_temp[0].compare(QString::fromLocal8Bit("餐饮服务")) == 0)
-        {
-            point[nPoints] = Point(lo, QString::fromLocal8Bit("餐饮"), name, la , 0 , 0 , FOOD);
-        }
-        else
-        {
-            point[nPoints] = Point(lo, "nothing important", name, la , 0 , 0 , other);
-        }
+    //     lo = row[1].toDouble();
+    //     la = row[2].toDouble();
+    //     QString name = row[0].trimmed().toUtf8();  // 去除首尾空白字符
+    //     QString type = row[3].trimmed().toUtf8();  // 去除首尾空白字符
+    //     QString temp = type;
+    //     QStringList type_temp = temp.split(';' , Qt::SkipEmptyParts);
+    //     if (type_temp[0].compare(QString::fromLocal8Bit("科教文化服务")) == 0)
+    //     {
+    //         point[nPoints] = Point(lo, QString::fromLocal8Bit("学校"), name, la , 0 , 0 , EDU);
+    //         QSqlQuery query;
+    //         QString myquery = QString("INSERT INTO points (index_point, name, longitude, latitude, type, marks, views) VALUES (%1, '%2', %3, %4, '%5', %6, %7)")
+    //                               .arg(nPoints)  // 使用你的索引值或其他适当的值
+    //                               .arg(name) // 避免 SQL 注入攻击，替换单引号s
+    //                               .arg(lo)
+    //                               .arg(la)
+    //                               .arg(QString::fromLocal8Bit("学校"))
+    //                               .arg(0)  // 使用适当的标记值或其他默认值
+    //                               .arg(0);
+    //         query.exec(myquery);
+    //     }
+    //     else if (type_temp[0].compare(QString::fromLocal8Bit("医疗保健服务")) == 0)
+    //     {
+    //         point[nPoints] = Point(lo, QString::fromLocal8Bit("医院"), name, la , 0 , 0 , hospital);
+    //         QSqlQuery query;
+    //         QString myquery = QString("INSERT INTO points (index_point, name, longitude, latitude, type, marks, views) VALUES (%1, '%2', %3, %4, '%5', %6, %7)")
+    //                               .arg(nPoints)  // 使用你的索引值或其他适当的值
+    //                               .arg(name) // 避免 SQL 注入攻击，替换单引号s
+    //                               .arg(lo)
+    //                               .arg(la)
+    //                               .arg(QString::fromLocal8Bit("医疗保健服务"))
+    //                               .arg(0)  // 使用适当的标记值或其他默认值
+    //                               .arg(0);
+    //         query.exec(myquery);
+    //     }
+    //     else if(type_temp[0].compare(QString::fromLocal8Bit("风景名胜")) == 0)
+    //     {
+    //         point[nPoints] = Point(lo, QString::fromLocal8Bit("风景名胜"), name, la , 0 , 0 , landscape);
+    //         QSqlQuery query;
+    //         QString myquery = QString("INSERT INTO points (index_point, name, longitude, latitude, type, marks, views) VALUES (%1, '%2', %3, %4, '%5', %6, %7)")
+    //                               .arg(nPoints)  // 使用你的索引值或其他适当的值
+    //                               .arg(name) // 避免 SQL 注入攻击，替换单引号s
+    //                               .arg(lo)
+    //                               .arg(la)
+    //                               .arg(QString::fromLocal8Bit("风景名胜"))
+    //                               .arg(0)  // 使用适当的标记值或其他默认值
+    //                               .arg(0);
+    //         query.exec(myquery);
+    //     }
+    //     else if(type_temp[0].compare(QString::fromLocal8Bit("交通设施服务")) == 0)
+    //     {
+    //         point[nPoints] = Point(lo, QString::fromLocal8Bit("交通设施服务"), name, la , 0 , 0 , traffic);
+    //         QSqlQuery query;
+    //         QString myquery = QString("INSERT INTO points (index_point, name, longitude, latitude, type, marks, views) VALUES (%1, '%2', %3, %4, '%5', %6, %7)")
+    //                               .arg(nPoints)  // 使用你的索引值或其他适当的值
+    //                               .arg(name) // 避免 SQL 注入攻击，替换单引号s
+    //                               .arg(lo)
+    //                               .arg(la)
+    //                               .arg(QString::fromLocal8Bit("交通设施服务"))
+    //                               .arg(0)  // 使用适当的标记值或其他默认值
+    //                               .arg(0);
+    //         query.exec(myquery);
+    //     }
+    //     else if (type_temp[0].compare(QString::fromLocal8Bit("餐饮服务")) == 0)
+    //     {
+    //         point[nPoints] = Point(lo, QString::fromLocal8Bit("餐饮"), name, la , 0 , 0 , FOOD);
+    //         QSqlQuery query;
+    //         QString myquery = QString("INSERT INTO points (index_point, name, longitude, latitude, type, marks, views) VALUES (%1, '%2', %3, %4, '%5', %6, %7)")
+    //                               .arg(nPoints)  // 使用你的索引值或其他适当的值
+    //                               .arg(name) // 避免 SQL 注入攻击，替换单引号s
+    //                               .arg(lo)
+    //                               .arg(la)
+    //                               .arg(QString::fromLocal8Bit("餐饮"))
+    //                               .arg(0)  // 使用适当的标记值或其他默认值
+    //                               .arg(0);
+    //         query.exec(myquery);
+    //     }
+    //     else
+    //     {
+    //         point[nPoints] = Point(lo, "nothing important", name, la , 0 , 0 , other);
+    //         QSqlQuery query;
+    //         QString myquery = QString("INSERT INTO points (index_point, name, longitude, latitude, type, marks, views) VALUES (%1, '%2', %3, %4, '%5', %6, %7)")
+    //                               .arg(nPoints)  // 使用你的索引值或其他适当的值
+    //                               .arg(name) // 避免 SQL 注入攻击，替换单引号s
+    //                               .arg(lo)
+    //                               .arg(la)
+    //                               .arg("nothing important")
+    //                               .arg(0)  // 使用适当的标记值或其他默认值
+    //                               .arg(0);
+    //         query.exec(myquery);
+    //     }
+    QSqlQuery query("SELECT * FROM points");
+    while (query.next()) {
+        int index_point = query.value(0).toInt();
+        QString name = query.value(1).toString().toUtf8();
+        double longitude = query.value(2).toDouble();
+        double latitude = query.value(3).toDouble();
+        QString type = query.value(4).toString().toUtf8();
+        double marks = query.value(5).toDouble();
+        int views = query.value(6).toInt();
+        point[nPoints] = Point(longitude, type, name, latitude , 0 , 0 , marks , views);
+
         nameToInedx_Mot.insert(name, nPoints);
-        //qDebug() << name << point[nPoints].Type << nPoints << point[nPoints].Type_;
+        //qDebug() << point[nPoints].Name << point[nPoints].Type << point[nPoints].Longitude;
         nPoints++;
     }
 
-    file.close();
+
+        //qDebug() << name << point[nPoints].Type << nPoints << point[nPoints].Type_;
+
+
+
 	//===================================================
 
-    for (int i = 1; i <= nPoints; i++)
+    for (int i = 1; i < nPoints; i++)
     {
-        QFile file("D:\\MyCode\\DataStructure Project\\" + point[i].Name + ".csv");
+        QString pointName = (point[i].Name);
+        QFile file("./point/" + (pointName) + ".csv");
 
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
             //qDebug() << point[i].Name << "没有子点";
             continue;
         }
+        qDebug() << "./point/" + point[i].Name + ".csv";
         QTextStream stream(&file);
-        int j = 0;
-        while (!stream.atEnd())
-        {
-            QString line = stream.readLine();
-            QStringList row = line.split(',', Qt::SkipEmptyParts);
-            if (j != 0)
-            {
-                lo = row[1].toDouble();
-                la = row[2].toDouble();
-                QString name = row[0];
-                //QString type = row[3];
-                point[i].subpoint[j] = subPoint(lo , name, la, 0);
-                point[i].subpoint[j].nameToInedxSub.insert(name, j);
+        int j = 1;
+        // while (!stream.atEnd())
+        // {
+        //     QString line = stream.readLine();
+        //     QStringList row = line.split(',', Qt::SkipEmptyParts);
+        //     double lo = row[1].toDouble();
+        //      double la = row[2].toDouble();
+        //     QString name = row[0].trimmed().toUtf8();
+        //     QString type = row[4].trimmed().toUtf8();
+        //     QString padj = row[5].trimmed();
+        //     QStringList pointsList = padj.split(',', Qt::SkipEmptyParts);
+        //     std::set<int> pointsadj;
+        //     for (const QString& point_ : pointsList)
+        //     {
+        //         bool ok;
+        //         int pointInt = point_.toInt(&ok);
+        //         if (ok) {
+        //             pointsadj.insert(pointInt);
+        //     }
+        //     point[i].subpoint[j] = subPoint(lo , name, la, 0 , pointsadj ,type);
+        //     point[i].subpoint[j].nameToInedxSub.insert(name, j);
 
-            }
-            point[i].subPointsNum = j;
-            j++;
+        //     }
+        //     point[i].subPointsNum = j;
+        //     j++;
 
-        }
+        // }
     }
 	
 
 	//===================================================
-	GetRoutes();
+    //GetRoutes();
 	//point[100].printInfo();
 	//show_Detail(48);
 	//cout << point[48].subPointsNum << endl;
