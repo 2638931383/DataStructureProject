@@ -38,7 +38,7 @@ uploadDiary::~uploadDiary()
 void uploadDiary::on_uploadPushButton_clicked()
 {
     diaryInfo inputDiary;
-    inputDiary.userId=0;
+    inputDiary.userId=1;
     inputDiary.title=ui->titleLineEdit->text();
     inputDiary.destination=ui->destinationLineEdit->text();
     inputDiary.content=ui->contentTextEdit->toPlainText();

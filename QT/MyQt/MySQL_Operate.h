@@ -6,5 +6,6 @@
 
 //链接数据库
 extern QSqlDatabase db;
+
 void Init_Database(void);
 #endif // MYSQL_OPERATE_H

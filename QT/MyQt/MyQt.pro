@@ -20,6 +20,7 @@ SOURCES += \
     diarydetail.cpp \
     main.cpp \
     mainwindow.cpp \
+    mine.cpp \
     uploaddiary.cpp
 
 HEADERS += \
@@ -33,6 +34,7 @@ HEADERS += \
     diaryall.h \
     diarydetail.h \
     mainwindow.h \
+    mine.h \
     uploaddiary.h
 
 FORMS += \
@@ -43,6 +45,7 @@ FORMS += \
     diaryall.ui \
     diarydetail.ui \
     mainwindow.ui \
+    mine.ui \
     uploaddiary.ui
 
 # Default rules for deployment.

@@ -1,114 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>diaryAll</class>
- <widget class="QWidget" name="diaryAll">
+ <class>mine</class>
+ <widget class="QWidget" name="mine">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>395</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLineEdit" name="searchLineEdit">
+  <widget class="QPlainTextEdit" name="headEdit">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>140</x>
      <y>20</y>
-     <width>291</width>
-     <height>20</height>
+     <width>104</width>
+     <height>64</height>
     </rect>
    </property>
-   <property name="placeholderText">
-    <string>请输入您想搜索的标题或内容</string>
+   <property name="plainText">
+    <string>头像位置
+</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="searchPushButton">
+  <widget class="QLabel" name="userNameLabel">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>20</y>
-     <width>41</width>
-     <height>21</height>
+     <x>160</x>
+     <y>100</y>
+     <width>61</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>搜索</string>
+    <string>用户名</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="allPushButton">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>50</y>
-     <width>81</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>全部</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="popularityPushButton">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>50</y>
-     <width>81</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>评分</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="browsePushButton">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>50</y>
-     <width>81</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>热度</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="refreshPushButton">
+  <widget class="QPushButton" name="feedbackButton">
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>50</y>
-     <width>81</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>刷新</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="uploadPushButton">
-   <property name="geometry">
-    <rect>
-     <x>370</x>
-     <y>20</y>
+     <y>10</y>
      <width>61</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>上传日记</string>
+    <string>反馈</string>
    </property>
   </widget>
   <widget class="QPushButton" name="navigatorButton">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>360</y>
+     <x>10</x>
+     <y>270</y>
      <width>81</width>
      <height>21</height>
     </rect>
@@ -120,8 +72,8 @@
   <widget class="QPushButton" name="recommendButton">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>360</y>
+     <x>110</x>
+     <y>270</y>
      <width>81</width>
      <height>21</height>
     </rect>
@@ -133,8 +85,8 @@
   <widget class="QPushButton" name="mineButton">
    <property name="geometry">
     <rect>
-     <x>330</x>
-     <y>360</y>
+     <x>310</x>
+     <y>270</y>
      <width>81</width>
      <height>21</height>
     </rect>
@@ -146,14 +98,82 @@
   <widget class="QPushButton" name="diaryButton">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>360</y>
+     <x>210</x>
+     <y>270</y>
      <width>81</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
     <string>日记</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="changePasswordButton">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>230</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>修改密码</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="uploadPushButton">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>190</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>上传日记</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="myDiaryButton">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>150</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>查看日记</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="accountLabel">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>120</y>
+     <width>161</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>账号</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="changeNameButton">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>230</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>修改昵称</string>
    </property>
   </widget>
  </widget>
