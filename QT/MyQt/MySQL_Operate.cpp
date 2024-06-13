@@ -8,8 +8,8 @@ void Init_Database(void)
 
     db.setHostName("127.0.0.1");
     db.setUserName("root");
-    db.setPassword("root");
-    db.setDatabaseName("database1");
+    db.setPassword("252211034");
+    db.setDatabaseName("dts");
     if(!db.open()){
         qDebug() << "未成功链接到数据库";
     }

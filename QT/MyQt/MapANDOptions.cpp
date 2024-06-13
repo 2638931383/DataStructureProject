@@ -33,7 +33,9 @@ Map_::Map_(QWidget *parent)
     mousePositionLabel->setAlignment(Qt::AlignCenter);
     mousePositionLabel->setFixedSize(500,20);
     connect(this, &Map_::mousePositionChanged, this, &Map_::updateMousePosition);
+
     readPoints();
+
     QGraphicsScene *Scene = new QGraphicsScene;
     QPixmap pixmap("map.jpg");
     QGraphicsPixmapItem *pixmapItem = new QGraphicsPixmapItem(pixmap);

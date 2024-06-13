@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 {
     Init_Database();
     QApplication a(argc, argv);
+<<<<<<< HEAD
     // bupt M;
     Login L;
     // diaryAll D;
@@ -20,5 +21,19 @@ int main(int argc, char *argv[])
     // D.show();
     L.show();
     // M.show();
+=======
+    bupt M;
+    //Login L;
+    MapANDOptions m;
+    //m.show();
+    M.show();
+
+    //diaryAll D;
+    //mine Mine;
+    //Mine.show();
+    // D.show();
+    //L.show();
+     // M.show();
+>>>>>>> b23e2697cac94313400fb59a701be5770bc383aa
     return a.exec();
 }

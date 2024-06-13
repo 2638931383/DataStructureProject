@@ -16,14 +16,23 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
+<<<<<<< HEAD
      <x>770</x>
      <y>490</y>
+=======
+     <x>840</x>
+     <y>970</y>
+>>>>>>> b23e2697cac94313400fb59a701be5770bc383aa
      <width>80</width>
      <height>18</height>
     </rect>
    </property>
    <property name="text">
+<<<<<<< HEAD
     <string>bupt</string>
+=======
+    <string>PushButton</string>
+>>>>>>> b23e2697cac94313400fb59a701be5770bc383aa
    </property>
   </widget>
  </widget>

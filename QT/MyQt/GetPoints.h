@@ -115,7 +115,7 @@ extern QMap<QString, int> nameToInedx_Mot;
 extern Point point[numOfPoints];
 extern bool visited[numOfPoints];
 extern int nPoints;
-extern double AMGraph[numOfPoints][numOfPoints];
+extern double AMGraph[500][500];
 extern double dis[numOfPoints];
 extern int path[numOfPoints];							//dis保存最短路径总权值、path通过保存路径的前驱结点来保存路径
 extern bool book[numOfPoints];

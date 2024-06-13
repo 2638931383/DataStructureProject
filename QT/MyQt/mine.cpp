@@ -81,6 +81,7 @@ void mine::on_myDiaryButton_clicked()
 }
 
 
+<<<<<<< HEAD
 
 
 
@@ -103,4 +104,10 @@ void mine::on_diaryButton_2_clicked()
     bupt* gotoBupt=new bupt;
     gotoBupt->show();
 }
+=======
+// void mine::on_feedbackButton_clicked()
+// {
+
+// }
+>>>>>>> b23e2697cac94313400fb59a701be5770bc383aa
 
