@@ -12,9 +12,10 @@ int main(int argc, char *argv[])
     Init_Database();
     QApplication a(argc, argv);
     bupt M;
-
+    // Login L;
     diaryAll D;
     D.show();
-     // M.show();
+    // L.show();
+     M.show();
     return a.exec();
 }
