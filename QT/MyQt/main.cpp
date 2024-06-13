@@ -7,15 +7,18 @@
 #include "MapANDOptions.h"
 #include"diaryall.h"
 #include "bupt.h"
+#include"mine.h"
 int main(int argc, char *argv[])
 {
     Init_Database();
     QApplication a(argc, argv);
-    bupt M;
-    // Login L;
+    // bupt M;
+    Login L;
     diaryAll D;
-    D.show();
-    // L.show();
-     M.show();
+    mine Mine;
+    Mine.show();
+    // D.show();
+    L.show();
+     // M.show();
     return a.exec();
 }

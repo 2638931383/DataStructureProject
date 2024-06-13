@@ -12,10 +12,6 @@ diaryDetail::diaryDetail(int diaryId, QWidget *parent) :
 
 void diaryDetail::getDiaryDetail(int diaryId){
     // 确保数据库连接已打开
-    if (!QSqlDatabase::database().isOpen()) {
-        qCritical() << "Database is not open!";
-        return;
-    }
 
     QSqlQuery query;
     query.prepare("SELECT * FROM diary WHERE diaryId = :diaryId");

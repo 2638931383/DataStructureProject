@@ -16,11 +16,15 @@ SOURCES += \
     Register.cpp \
     allclass.cpp \
     bupt.cpp \
+    changepassword.cpp \
+    changeusername.cpp \
     diaryall.cpp \
     diarydetail.cpp \
     main.cpp \
     mainwindow.cpp \
     mine.cpp \
+    mydiary.cpp \
+    mydiarydetail.cpp \
     uploaddiary.cpp
 
 HEADERS += \
@@ -31,10 +35,14 @@ HEADERS += \
     Register.h \
     allclass.h \
     bupt.h \
+    changepassword.h \
+    changeusername.h \
     diaryall.h \
     diarydetail.h \
     mainwindow.h \
     mine.h \
+    mydiary.h \
+    mydiarydetail.h \
     uploaddiary.h
 
 FORMS += \
@@ -42,10 +50,14 @@ FORMS += \
     MapANDOptions.ui \
     Register.ui \
     bupt.ui \
+    changepassword.ui \
+    changeusername.ui \
     diaryall.ui \
     diarydetail.ui \
     mainwindow.ui \
     mine.ui \
+    mydiary.ui \
+    mydiarydetail.ui \
     uploaddiary.ui
 
 # Default rules for deployment.

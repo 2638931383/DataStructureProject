@@ -1,6 +1,7 @@
 #include "MySQL_Operate.h"
 
 QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+int MySQL_Operate::userID=0;
 void Init_Database(void)
 {
 

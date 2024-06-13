@@ -1,5 +1,6 @@
 #include "Login.h"
 #include "ui_Login.h"
+#include"MySQL_Operate.h"
 Login::Login(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Login)
@@ -48,6 +49,8 @@ void Login::on_Login__clicked()
     {
         qDebug()<<"Login success";
         QMessageBox::information(this,"Login","Login sucessfully.");
+        MySQL_Operate::userID=ID.toInt();
+        qDebug()<<MySQL_Operate::userID;
         MapANDOptions *M = new MapANDOptions;                                        //Login sucessfully
         M->show();
         this->close();

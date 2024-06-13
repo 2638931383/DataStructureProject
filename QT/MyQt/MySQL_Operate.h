@@ -8,4 +8,9 @@
 extern QSqlDatabase db;
 
 void Init_Database(void);
+class MySQL_Operate{
+public:
+    static int userID;
+};
+
 #endif // MYSQL_OPERATE_H
