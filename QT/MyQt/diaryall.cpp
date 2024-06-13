@@ -497,7 +497,7 @@ void diaryAll::on_refreshPushButton_clicked()
 void diaryAll::on_mineButton_clicked()
 {
     mine *user = new mine;
+    QTimer::singleShot(1000, this, &QWidget::close); // 延迟关闭当前窗口
     user->show();
-    QTimer::singleShot(2, this, &QWidget::close); // 延迟关闭当前窗口
 }
 
