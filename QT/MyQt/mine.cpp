@@ -76,8 +76,8 @@ void mine::on_myDiaryButton_clicked()
 }
 
 
-void mine::on_feedbackButton_clicked()
-{
+// void mine::on_feedbackButton_clicked()
+// {
 
-}
+// }
 

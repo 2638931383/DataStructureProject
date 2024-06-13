@@ -12,13 +12,17 @@ int main(int argc, char *argv[])
 {
     Init_Database();
     QApplication a(argc, argv);
-    // bupt M;
-    Login L;
-    diaryAll D;
-    mine Mine;
-    Mine.show();
+    bupt M;
+    //Login L;
+    MapANDOptions m;
+    //m.show();
+    M.show();
+
+    //diaryAll D;
+    //mine Mine;
+    //Mine.show();
     // D.show();
-    L.show();
+    //L.show();
      // M.show();
     return a.exec();
 }

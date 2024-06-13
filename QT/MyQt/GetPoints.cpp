@@ -6,7 +6,7 @@ QMap<QString, int> nameToInedx_Mot;
 Point point[numOfPoints];
 bool visited[numOfPoints];
 int nPoints;
-double AMGraph[numOfPoints][numOfPoints];
+double AMGraph[500][500];
 double dis[numOfPoints];
 int path[numOfPoints];							//dis保存最短路径总权值、path通过保存路径的前驱结点来保存路径
 bool book[numOfPoints];
