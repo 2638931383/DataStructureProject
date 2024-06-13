@@ -6,11 +6,12 @@
 #include "Register.h"
 #include "MapANDOptions.h"
 #include"diaryall.h"
+#include "bupt.h"
 int main(int argc, char *argv[])
 {
     Init_Database();
     QApplication a(argc, argv);
-    MapANDOptions M;
+    bupt M;
 
      M.show();
     return a.exec();

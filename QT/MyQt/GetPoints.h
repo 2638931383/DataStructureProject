@@ -47,14 +47,15 @@ public:
     double Latitude;
     std::set<int> pointsAdj;
     int pointsAdjNum;
+    QString type;
 
 public:
     subPoint();
-    subPoint(double, QString, double, int);
+    subPoint(double, QString, double, int ,std::set<int>,QString t);
     void printInfo();
     //subPoint();
     //subPoint(double, string, string, double, int, int);
-    QMap<QString, int> nameToInedxSub;
+
 };
 
 /***********************************************************/
@@ -100,10 +101,13 @@ public:
     float Scores;
     subPoint subpoint[numOfPoints];
     int subPointsNum;
-    Point_Type Type_;
+    //Point_Type Type_;
+    double marks;
+    double views;
+    QMap<QString, int> nameToInedxSub;
 public:
     Point();
-    Point(double , QString , QString , double , int , int , Point_Type);
+    Point(double , QString , QString , double , int , int ,double , double );
     void printInfo();
 };
 
