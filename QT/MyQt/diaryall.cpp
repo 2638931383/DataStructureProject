@@ -9,10 +9,14 @@ diaryAll::diaryAll(QWidget *parent)
     , ui(new Ui::diaryAll)
 {
     ui->setupUi(this);
+    ui->navigatorButton->hide();
+    ui->recommendButton->hide();
+    ui->diaryButton->hide();
+    ui->mineButton->hide();
     ui->allPushButton->setStyleSheet(seletcedStyleSheet);
     ui->popularityPushButton->setStyleSheet(initialStyleSheet);
     ui->browsePushButton->setStyleSheet(initialStyleSheet);
-    ui->refreshPushButton->setStyleSheet(initialStyleSheet);
+    // ui->refreshPushButton->setStyleSheet(initialStyleSheet);
     getAllDiary();
     diaryInfoListShow = diaryInfoList;
     showDiaryAll();
@@ -79,22 +83,37 @@ int diaryAll::showPopularityDiaryAll(){
     }
     return diaryInfoListShow.size();
 }
-int diaryAll::showBrowseDiaryAll(){
-
+int diaryAll::showBrowseDiaryAll() {
     int n = diaryInfoListShow.size();
     int sortRange = std::min(10, n); // 确保排序范围不超过数组大小
 
-    for (int i = 0; i < sortRange - 1; ++i) {
-        for (int j = 0; j < sortRange - i - 1; ++j) {
-            if (diaryInfoListShow[j].browse < diaryInfoListShow[j + 1].browse) {
-                // 交换两个元素的位置
-                std::swap(diaryInfoListShow[j], diaryInfoListShow[j + 1]);
-            }
-        }
+    if (sortRange > 1) {
+        quickSort(0, sortRange - 1);
     }
+
     return diaryInfoListShow.size();
 }
+void diaryAll::quickSort(int left, int right) {
+    if (left < right) {
+        int pivotIndex = partition(left, right);
+        quickSort(left, pivotIndex - 1);
+        quickSort(pivotIndex + 1, right);
+    }
+}
 
+int diaryAll::partition(int left, int right) {
+    int pivot = diaryInfoListShow[right].browse;
+    int i = left - 1;
+
+    for (int j = left; j < right; ++j) {
+        if (diaryInfoListShow[j].browse > pivot) { // 按照从大到小排序
+            ++i;
+            std::swap(diaryInfoListShow[i], diaryInfoListShow[j]);
+        }
+    }
+    std::swap(diaryInfoListShow[i + 1], diaryInfoListShow[right]);
+    return i + 1;
+}
 void diaryAll::createDiaryEntries() {
     for (const diaryInfo &log : diaryInfoListShow) {
         QLabel *titleLabel = new QLabel(log.title, this);
@@ -382,7 +401,7 @@ void diaryAll::on_allPushButton_clicked()
         ui->allPushButton->setStyleSheet(seletcedStyleSheet);
         ui->popularityPushButton->setStyleSheet(initialStyleSheet);
         ui->browsePushButton->setStyleSheet(initialStyleSheet);
-        ui->refreshPushButton->setStyleSheet(initialStyleSheet);
+        // ui->refreshPushButton->setStyleSheet(initialStyleSheet);
         if(isSearch==0){
             diaryInfoListShow = diaryInfoList;
         }
@@ -407,7 +426,7 @@ void diaryAll::on_popularityPushButton_clicked()
         ui->allPushButton->setStyleSheet(initialStyleSheet);
         ui->popularityPushButton->setStyleSheet(seletcedStyleSheet);
         ui->browsePushButton->setStyleSheet(initialStyleSheet);
-        ui->refreshPushButton->setStyleSheet(initialStyleSheet);
+        // ui->refreshPushButton->setStyleSheet(initialStyleSheet);
         if(isSearch==0){
             diaryInfoListShow = diaryInfoList;
         }
@@ -425,7 +444,7 @@ void diaryAll::on_browsePushButton_clicked()
         ui->allPushButton->setStyleSheet(initialStyleSheet);
         ui->popularityPushButton->setStyleSheet(initialStyleSheet);
         ui->browsePushButton->setStyleSheet(seletcedStyleSheet);
-        ui->refreshPushButton->setStyleSheet(initialStyleSheet);
+        // ui->refreshPushButton->setStyleSheet(initialStyleSheet);
         if(isSearch==0){
             diaryInfoListShow = diaryInfoList;
             showBrowseDiaryAll();
@@ -497,7 +516,7 @@ void diaryAll::on_refreshPushButton_clicked()
 void diaryAll::on_mineButton_clicked()
 {
     mine *user = new mine;
-    QTimer::singleShot(1000, this, &QWidget::close); // 延迟关闭当前窗口
     user->show();
+    // this->close();
 }
 

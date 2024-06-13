@@ -28,9 +28,16 @@ private slots:
 
     void on_myDiaryButton_clicked();
 
+    void on_feedbackButton_clicked();
+
+    void on_navigatorButton_clicked();
+
+    void on_diaryButton_2_clicked();
+
 private:
     Ui::mine *ui;
     QString userName="";
+    int page[4]={0};
 };
 
 #endif // MINE_H

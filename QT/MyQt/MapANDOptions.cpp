@@ -35,7 +35,7 @@ Map_::Map_(QWidget *parent)
     connect(this, &Map_::mousePositionChanged, this, &Map_::updateMousePosition);
     readPoints();
     QGraphicsScene *Scene = new QGraphicsScene;
-    QPixmap pixmap("D:\\MyCode\\DataStructure Project\\QT\\MyQt\\map.jpg");
+    QPixmap pixmap("map.jpg");
     QGraphicsPixmapItem *pixmapItem = new QGraphicsPixmapItem(pixmap);
     pixmapItem->setPos(-300,-200);
     pixmapItem->setScale(0.8);
@@ -46,6 +46,7 @@ Map_::Map_(QWidget *parent)
     QGraphicsProxyWidget *proxy[nPoints];
     for (int i = 1;i <= nPoints;i++)
     {
+
         double X = ((point[i].Longitude) * 5999.742029) - 696356.298175;
         double Y = ((point[i].Latitude) * (-8139.050435)) + 326865.447942;
         Botton[i] = new QPushButton();
@@ -66,8 +67,8 @@ Map_::Map_(QWidget *parent)
         proxy[i]->setPos(X,Y);
         //qDebug() << sceneX << sceneY;
         Scene->addItem(proxy[i]);
-
     }
+
     //Scene->addItem(proxy_);
 
     // QLineF *line[nPoints >> 1];
@@ -332,3 +333,11 @@ void sortByTypeAndAddToModel(int select, QStandardItemModel *model , QString typ
         }
     }
 }
+
+void MapANDOptions::on_pushButton_clicked()
+{
+    bupt * b = new bupt();
+    b->show();
+    this->close();
+}
+

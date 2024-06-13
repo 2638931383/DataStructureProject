@@ -52,6 +52,10 @@ public:
     void onSearchTextChanged(const QString &text);
 
     void refresh();
+
+    void quickSort(int left, int right);
+
+    int partition(int left, int right) ;
 private slots:
     void on_allPushButton_clicked();
 

@@ -17,6 +17,7 @@
 #include "GetPoints.h"
 #include "MySQL_Operate.h"
 #include <QLineEdit>
+#include <bupt.h>
 void DrawPoints(void);
 
 namespace Ui {
@@ -68,6 +69,8 @@ private slots:
     void togglefood();
     void togglemarks();
     void toggleviews();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MapANDOptions *ui;

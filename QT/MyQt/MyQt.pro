@@ -20,6 +20,7 @@ SOURCES += \
     changeusername.cpp \
     diaryall.cpp \
     diarydetail.cpp \
+    feedback.cpp \
     main.cpp \
     mainwindow.cpp \
     mine.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     changeusername.h \
     diaryall.h \
     diarydetail.h \
+    feedback.h \
     mainwindow.h \
     mine.h \
     mydiary.h \
@@ -54,6 +56,7 @@ FORMS += \
     changeusername.ui \
     diaryall.ui \
     diarydetail.ui \
+    feedback.ui \
     mainwindow.ui \
     mine.ui \
     mydiary.ui \

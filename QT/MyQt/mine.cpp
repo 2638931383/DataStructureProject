@@ -5,12 +5,17 @@
 #include"Login.h"
 #include"uploaddiary.h"
 #include"myDiary.h"
+#include"diaryAll.h"
+#include"MapANDOptions.h"
+#include"bupt.h"
+#include"feedback.h"
 mine::mine(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::mine)
 {
     qDebug()<<MySQL_Operate::userID;
     ui->setupUi(this);
+
     getUserName(MySQL_Operate::userID);
     ui->userNameLabel->setText(userName);
     ui->accountLabel->setText("我的ID:"+QString::number(MySQL_Operate::userID));
@@ -43,8 +48,8 @@ mine::~mine()
 
 void mine::on_diaryButton_clicked()
 {
-
-
+    diaryAll *toDiaryAll = new diaryAll;
+    toDiaryAll->show();
 }
 
 
@@ -76,8 +81,26 @@ void mine::on_myDiaryButton_clicked()
 }
 
 
+
+
+
+void mine::on_navigatorButton_clicked()
+{
+    MapANDOptions *toNavitagor=new MapANDOptions;
+    toNavitagor->show();
+}
+
+
 void mine::on_feedbackButton_clicked()
 {
+    feedback* gotoFeedback=new feedback;
+    gotoFeedback->show();
+}
 
+
+void mine::on_diaryButton_2_clicked()
+{
+    bupt* gotoBupt=new bupt;
+    gotoBupt->show();
 }
 

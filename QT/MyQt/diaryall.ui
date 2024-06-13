@@ -42,7 +42,7 @@
   <widget class="QPushButton" name="allPushButton">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>50</x>
      <y>50</y>
      <width>81</width>
      <height>21</height>
@@ -55,7 +55,7 @@
   <widget class="QPushButton" name="popularityPushButton">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>170</x>
      <y>50</y>
      <width>81</width>
      <height>21</height>
@@ -68,7 +68,7 @@
   <widget class="QPushButton" name="browsePushButton">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>290</x>
      <y>50</y>
      <width>81</width>
      <height>21</height>
@@ -76,19 +76,6 @@
    </property>
    <property name="text">
     <string>热度</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="refreshPushButton">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>50</y>
-     <width>81</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>刷新</string>
    </property>
   </widget>
   <widget class="QPushButton" name="uploadPushButton">

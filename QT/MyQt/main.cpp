@@ -14,11 +14,11 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     // bupt M;
     Login L;
-    diaryAll D;
-    mine Mine;
-    Mine.show();
+    // diaryAll D;
+    // mine Mine;
+    // Mine.show();
     // D.show();
     L.show();
-     // M.show();
+    // M.show();
     return a.exec();
 }
